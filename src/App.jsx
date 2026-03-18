@@ -15,6 +15,10 @@ import ManageStaff from './pages/admin/ManageStaff';
 import StaffDashboard from './pages/StaffDashboard';
 import StudentDashboard from './pages/StudentDashboard';
 
+import DocumentRequests from './pages/student/DocumentRequests';
+import LMSMaterials from './pages/student/LMSMaterials';
+import FeesAdmissions from './pages/student/FeesAdmissions';
+
 const AppLayout = ({ children }) => {
   return (
     <div className="flex h-screen bg-slate-900 text-slate-100 overflow-hidden">
@@ -50,7 +54,12 @@ const RoleBasedRouter = () => {
         <Route path="/admin/*" element={<Navigate to="/admin" />} />
 
         <Route path="/staff/*" element={user.role === 'staff' ? <StaffDashboard /> : <Navigate to={`/${user.role}`} />} />
-        <Route path="/student/*" element={user.role === 'student' ? <StudentDashboard /> : <Navigate to={`/${user.role}`} />} />
+
+        <Route path="/student" element={user.role === 'student' ? <StudentDashboard /> : <Navigate to={`/${user.role}`} />} />
+        <Route path="/student/documents" element={user.role === 'student' ? <DocumentRequests /> : <Navigate to={`/${user.role}`} />} />
+        <Route path="/student/lms" element={user.role === 'student' ? <LMSMaterials /> : <Navigate to={`/${user.role}`} />} />
+        <Route path="/student/fees" element={user.role === 'student' ? <FeesAdmissions /> : <Navigate to={`/${user.role}`} />} />
+        <Route path="/student/*" element={<Navigate to="/student" />} />
 
         <Route path="*" element={<Navigate to={`/${user.role}`} />} />
       </Routes>

@@ -7,13 +7,14 @@ import {
     FileText,
     Settings,
     LogOut,
-    CalendarCheck
+    CalendarCheck,
+    Wallet
 } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
 const Sidebar = () => {
-    const { user, login } = useAuth();
+    const { user, logout } = useAuth();
     const location = useLocation();
 
     const adminLinks = [
@@ -33,16 +34,12 @@ const Sidebar = () => {
         { icon: LayoutDashboard, label: 'Dashboard', path: '/student' },
         { icon: FileText, label: 'Document Requests', path: '/student/documents' },
         { icon: BookOpen, label: 'LMS (Materials)', path: '/student/lms' },
+        { icon: Wallet, label: 'Fees & Admissions', path: '/student/fees' },
     ];
 
     const links = user?.role === 'admin' ? adminLinks
         : user?.role === 'staff' ? staffLinks
             : studentLinks;
-
-    // Mock Role Switcher for dev demo purposes
-    const switchRole = (role) => {
-        login(role, role === 'admin' ? 'System Admin' : role === 'staff' ? 'Prof. Smith' : 'Alex Student');
-    };
 
     return (
         <motion.aside
@@ -73,19 +70,12 @@ const Sidebar = () => {
             </div>
 
             <div className="p-6 border-t border-white/10">
-                {/* Development Tool: Role Switcher */}
-                <div className="mb-4 p-3 bg-white/5 rounded-xl border border-white/10">
-                    <p className="text-xs text-slate-400 mb-2 uppercase tracking-wider">Dev Role Switcher</p>
-                    <div className="flex gap-2 text-xs">
-                        <button onClick={() => switchRole('admin')} className={`px-2 py-1 rounded ${user?.role === 'admin' ? 'bg-indigo-500' : 'bg-slate-800'}`}>Admin</button>
-                        <button onClick={() => switchRole('staff')} className={`px-2 py-1 rounded ${user?.role === 'staff' ? 'bg-indigo-500' : 'bg-slate-800'}`}>Staff</button>
-                        <button onClick={() => switchRole('student')} className={`px-2 py-1 rounded ${user?.role === 'student' ? 'bg-indigo-500' : 'bg-slate-800'}`}>Student</button>
-                    </div>
-                </div>
-
-                <button className="flex items-center space-x-3 w-full p-3 rounded-xl text-rose-400 hover:bg-rose-500/10 transition-all">
+                <button
+                    onClick={logout}
+                    className="flex items-center space-x-3 w-full p-3 rounded-xl text-rose-400 hover:bg-rose-500/10 transition-all font-medium"
+                >
                     <LogOut size={20} />
-                    <span className="font-medium">Logout</span>
+                    <span>Logout</span>
                 </button>
             </div>
         </motion.aside>

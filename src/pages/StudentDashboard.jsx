@@ -71,7 +71,8 @@ const StudentDashboard = () => {
                                     initial={{ opacity: 0, x: 20 }}
                                     animate={{ opacity: 1, x: 0 }}
                                     transition={{ delay: idx * 0.1 }}
-                                    className="p-3 bg-slate-800/50 rounded-xl border border-white/5 border-l-4 border-l-indigo-500"
+                                    onClick={() => addToast(`Opening announcement: ${ann.title}`, 'info')}
+                                    className="p-3 bg-slate-800/50 rounded-xl border border-white/5 border-l-4 border-l-indigo-500 cursor-pointer hover:bg-slate-700/50 transition-colors mb-3 last:mb-0"
                                 >
                                     <p className="font-medium text-white text-sm">{ann.title} {ann.department !== 'All' && <span className="text-[10px] ml-2 bg-indigo-500/20 text-indigo-300 px-1.5 py-0.5 rounded uppercase">{ann.department}</span>}</p>
                                     <p className="text-xs text-slate-500 mt-1">{ann.time}</p>

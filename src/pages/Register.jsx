@@ -12,7 +12,7 @@ const Register = () => {
 
     const [formData, setFormData] = useState({
         fullName: '',
-        email: '',
+        institutionalId: '',
         password: '',
         role: 'student',
         department: departments[0]
@@ -20,10 +20,20 @@ const Register = () => {
 
     const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        register(formData);
-        // AuthContext updates the user, and App.jsx Router triggers redirection
+
+        // Generate pseudo-email for Supabase Auth
+        const generatedEmail = `${formData.institutionalId.toLowerCase()}@cocsit.edu`;
+        const dataToSubmit = {
+            ...formData,
+            email: generatedEmail
+        };
+
+        const { success } = await register(dataToSubmit);
+        if (success) {
+            navigate('/');
+        }
     };
 
     return (
@@ -51,10 +61,10 @@ const Register = () => {
                         </div>
 
                         <div>
-                            <label className="block text-sm text-slate-300 mb-1 ml-1">Email</label>
+                            <label className="block text-sm text-slate-300 mb-1 ml-1">Institutional ID</label>
                             <div className="relative">
-                                <Mail size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
-                                <input required name="email" value={formData.email} onChange={handleChange} type="email" placeholder="john@cocsit.edu" className="w-full bg-slate-900/50 border border-white/10 rounded-xl py-2 pl-10 pr-4 text-white focus:outline-none focus:border-indigo-500 transition-colors" />
+                                <Briefcase size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+                                <input required name="institutionalId" value={formData.institutionalId} onChange={handleChange} type="text" placeholder="e.g. STU-1001" className="w-full bg-slate-900/50 border border-white/10 rounded-xl py-2 pl-10 pr-4 text-white focus:outline-none focus:border-indigo-500 transition-colors" />
                             </div>
                         </div>
                     </div>

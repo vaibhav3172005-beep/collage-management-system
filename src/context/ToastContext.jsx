@@ -9,7 +9,7 @@ export const useToast = () => useContext(ToastContext);
 export const ToastProvider = ({ children }) => {
     const [toasts, setToasts] = useState([]);
 
-    const addToast = (message, type = 'success') => {
+    const showToast = (message, type = 'success') => {
         const id = Date.now();
         setToasts(prev => [...prev, { id, message, type }]);
 
@@ -20,7 +20,7 @@ export const ToastProvider = ({ children }) => {
     };
 
     return (
-        <ToastContext.Provider value={{ addToast }}>
+        <ToastContext.Provider value={{ showToast, addToast: showToast }}>
             {children}
             <div className="fixed bottom-6 right-6 z-50 flex flex-col space-y-3">
                 <AnimatePresence>
@@ -31,8 +31,8 @@ export const ToastProvider = ({ children }) => {
                             animate={{ opacity: 1, y: 0, scale: 1 }}
                             exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
                             className={`flex items-center space-x-3 px-6 py-4 rounded-xl shadow-xl border ${toast.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' :
-                                    toast.type === 'error' ? 'bg-rose-500/10 border-rose-500/20 text-rose-400' :
-                                        'bg-indigo-500/10 border-indigo-500/20 text-indigo-400'
+                                toast.type === 'error' ? 'bg-rose-500/10 border-rose-500/20 text-rose-400' :
+                                    'bg-indigo-500/10 border-indigo-500/20 text-indigo-400'
                                 } backdrop-blur-md`}
                         >
                             {toast.type === 'success' && <CheckCircle size={20} />}

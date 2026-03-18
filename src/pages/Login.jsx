@@ -5,15 +5,21 @@ import { motion } from 'framer-motion';
 import { Hexagon, Mail, Lock } from 'lucide-react';
 
 const Login = () => {
-    const [email, setEmail] = useState('');
+    const [institutionalId, setInstitutionalId] = useState('');
     const [password, setPassword] = useState('');
     const { login } = useAuth();
     const navigate = useNavigate();
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        login(email, password);
-        // Let the RoleBasedRouter in App.jsx handle redirection after state updates
+
+        // Ensure strictly lowercase matches on both Login and Register
+        const generatedEmail = `${institutionalId.trim().toLowerCase()}@cocsit.edu`;
+
+        const { success } = await login(generatedEmail, password);
+        if (success) {
+            navigate('/');
+        }
     };
 
     return (
@@ -35,19 +41,18 @@ const Login = () => {
 
                 <form onSubmit={handleSubmit} className="space-y-5">
                     <div>
-                        <label className="block text-sm text-slate-300 mb-1 ml-1">Email Address</label>
+                        <label className="block text-sm text-slate-300 mb-1 ml-1">Institutional ID / Admin ID</label>
                         <div className="relative">
                             <Mail size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
                             <input
-                                type="email"
+                                type="text"
                                 required
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                placeholder="admin@cocsit.edu"
+                                value={institutionalId}
+                                onChange={(e) => setInstitutionalId(e.target.value)}
+                                placeholder="e.g. STU-1001 or ADM-01"
                                 className="w-full bg-slate-900/50 border border-white/10 rounded-xl py-3 pl-10 pr-4 text-white focus:outline-none focus:border-indigo-500 transition-colors"
                             />
                         </div>
-                        <p className="text-xs text-slate-500 mt-2 ml-1">Hint: Type 'admin', 'staff', or 'student' in email</p>
                     </div>
 
                     <div>
