@@ -39,9 +39,9 @@ const RoleBasedRouter = () => {
   if (!user) {
     return (
       <Routes>
-        <Route path="/login" element={<Login />} />
+        <Route path="/home" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="*" element={<Navigate to="/login" />} />
+        <Route path="*" element={<Navigate to="/home" />} />
       </Routes>
     );
   }
